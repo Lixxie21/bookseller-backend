@@ -12,8 +12,7 @@ app.use(cors({
     origin: [
         'https://stellular-pika-8681a1.netlify.app',  // TU NETLIFY
         'http://localhost:5500',
-        'http://127.0.0.1:5500',
-        'https://railway.com'  // Para pruebas internas
+        'http://127.0.0.1:5500'
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
