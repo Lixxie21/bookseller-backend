@@ -1,13 +1,15 @@
 const express = require('express');
 const Stripe = require('stripe');
 const cors = require('cors');
-require('dotenv').config();
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const app = express();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'https://stellular-pika-8681a1.netlify.app/'
+    origin: ['https://stellular-pika-8681a1.netlify.app/', 'http://localhost:5500', 'http://127.0.0.1:5500']
 }));
 app.use(express.json());
 
@@ -33,9 +35,6 @@ app.post('/create-checkout-session', async (req, res) => {
             mode: 'payment',
             success_url: `${process.env.FRONTEND_URL}/success.html`,
             cancel_url: `${process.env.FRONTEND_URL}/cancel.html`,
-            metadata: {
-                order_id: Date.now().toString()
-            }
         });
 
         res.json({ id: session.id });
@@ -46,7 +45,7 @@ app.post('/create-checkout-session', async (req, res) => {
 });
 
 app.get('/health', (req, res) => {
-    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+    res.json({ status: 'ok', mode: process.env.STRIPE_SECRET_KEY.includes('sk_live') ? 'LIVE' : 'TEST' });
 });
 
 const PORT = process.env.PORT || 3000;
