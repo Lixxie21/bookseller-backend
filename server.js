@@ -10,7 +10,7 @@ const app = express();
 // ✅ CONFIGURACIÓN CORS CORRECTA PARA NETLIFY
 app.use(cors({
     origin: [
-        'https://stellular-pika-8681a1.netlify.app',
+        'https://bookseller.42web.io',
         'https://bookseller-backend-production.up.railway.app'
     ],
     methods: ['GET', 'POST', 'OPTIONS'],
@@ -41,8 +41,8 @@ app.post('/create-checkout-session', async (req, res) => {
             payment_method_types: ['card'],
             line_items: lineItems,
             mode: 'payment',
-            success_url: 'https://stellular-pika-8681a1.netlify.app/success.html',
-            cancel_url: 'https://stellular-pika-8681a1.netlify.app/cancel.html',
+            success_url: 'bookseller.42web.io/success.html',
+            cancel_url: 'bookseller.42web.io/cancel.html',
         });
 
         res.json({ id: session.id });
@@ -56,7 +56,7 @@ app.get('/health', (req, res) => {
     res.json({ 
         status: 'ok', 
         mode: 'LIVE',
-        message: 'CORS configurado para Netlify'
+        message: 'CORS configurado para lo que caiga'
     });
 });
 
