@@ -7,18 +7,19 @@ dotenv.config();
 
 const app = express();
 
-// ✅ CORS CORRECTO
+// ✅ CONFIGURACIÓN CORS CORRECTA PARA NETLIFY
 app.use(cors({
     origin: [
         'https://stellular-pika-8681a1.netlify.app',
-        'http://localhost:5500',
-        'http://127.0.0.1:5500'
-    ]
+        'https://bookseller-backend-production.up.railway.app'
+    ],
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(express.json());
-
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+
+app.use(express.json());
 
 app.post('/create-checkout-session', async (req, res) => {
     try {
@@ -54,7 +55,7 @@ app.post('/create-checkout-session', async (req, res) => {
 app.get('/health', (req, res) => {
     res.json({ 
         status: 'ok', 
-        mode: process.env.STRIPE_SECRET_KEY?.includes('sk_live') ? 'LIVE' : 'TEST',
+        mode: 'LIVE',
         message: 'CORS configurado para Netlify'
     });
 });
