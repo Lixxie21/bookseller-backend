@@ -7,21 +7,18 @@ dotenv.config();
 
 const app = express();
 
-// CONFIGURACIÓN CORS CORRECTA
+// ✅ CORS CORRECTO
 app.use(cors({
     origin: [
         'https://stellular-pika-8681a1.netlify.app',
         'http://localhost:5500',
         'http://127.0.0.1:5500'
-    ],
-    credentials: true,
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    ]
 }));
 
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-
 app.use(express.json());
+
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 app.post('/create-checkout-session', async (req, res) => {
     try {
@@ -57,12 +54,12 @@ app.post('/create-checkout-session', async (req, res) => {
 app.get('/health', (req, res) => {
     res.json({ 
         status: 'ok', 
-        mode: 'LIVE',
-        cors_allowed: 'https://stellular-pika-8681a1.netlify.app'
+        mode: process.env.STRIPE_SECRET_KEY?.includes('sk_live') ? 'LIVE' : 'TEST',
+        message: 'CORS configurado para Netlify'
     });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en puerto ${PORT}`);
 });
